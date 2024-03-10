@@ -44,7 +44,6 @@ import kotlin.math.roundToInt
             Spacer(modifier = Modifier.height(5.dp))
             Card(
                 onClick = {
-                    navController.navigate(Screens.DetailScreen.route)
                 },
                 colors = CardDefaults.cardColors(
                     containerColor = backgroundColor,
@@ -62,28 +61,11 @@ import kotlin.math.roundToInt
                         modifier = Modifier.align(Alignment.Start),
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
-                        data.time?.let {
-                            Text(
-                                text = it.format(
-                                    DateTimeFormatter.ofPattern("HH:mm a")
-                                ),
-                                fontSize = 12.sp,
-                                modifier = Modifier.weight(7f),
-                                color = Color.White
-                            )
-                        }
 
                         Text(
-                            text = "Today",
-                            modifier = Modifier.weight(1.5f),
+                            text = data.date,
+                            modifier = Modifier.fillMaxWidth(),
                             color = Color.White
-                        )
-                    }
-                    data.weatherType?.let { painterResource(id = it.iconRes) }?.let {
-                        Image(
-                            painter = it,
-                            contentDescription = null,
-                            modifier = Modifier.width(40.dp).height(40.dp)
                         )
                     }
                     Spacer(modifier = Modifier.height(2.dp))
