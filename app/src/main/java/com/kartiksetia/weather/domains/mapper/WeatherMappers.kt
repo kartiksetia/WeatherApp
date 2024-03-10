@@ -60,7 +60,7 @@ fun DailyWeatherDataDto.toWeatherDataMap(): Map<Int, List<WeatherData>> {
 }
 
 fun WeatherDto.toWeatherInfo(): WeatherInfo {
-    val dailyWeatherDataMap = dailyWeatherData.toWeatherDataMap()
+    val dailyWeatherDataMap = hourlyWeatherData.toWeatherDataMap()
     val currentTemp = currentWeatherData.temperature
     val currentPrecipitation = currentWeatherData.precipitation
     val currentWeatherCode = currentWeatherData.weatherCode

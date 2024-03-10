@@ -7,5 +7,5 @@ data class WeatherData(
     val time: LocalDateTime,
     val temperatureCelsius: Double,
     val windSpeed: Double,
-    val weatherType: WeatherType,
+    val weatherType: WeatherType
 )

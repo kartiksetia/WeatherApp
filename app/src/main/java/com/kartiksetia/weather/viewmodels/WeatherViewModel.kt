@@ -24,11 +24,11 @@ class WeatherViewModel @Inject constructor(
 
      fun loadWeatherInfo() {
         val cities = ArrayList<CityInfo>()
-        cities.add(CityInfo("New York", "New York",40.7128,74.0060))
-        cities.add(CityInfo("Austin", "Texas",30.2672,97.7431))
-        cities.add(CityInfo("Sacramento", "California",38.5816,121.4944))
-        cities.add(CityInfo("Trenton", "New Jersey\n",40.2206,74.7597))
-        cities.add(CityInfo("Columbus", "Ohio",39.9612,82.9988))
+        cities.add(CityInfo("New York", "New York",40.730610,-73.935242))
+        cities.add(CityInfo("Austin", "Texas",30.266666,-97.733330))
+        cities.add(CityInfo("Sacramento", "California",38.575764,-121.478851))
+        cities.add(CityInfo("Trenton", "New Jersey",40.217052,-74.742935))
+        cities.add(CityInfo("Columbus", "Ohio",39.983334,-82.983330))
         val weatherInfoList : MutableList<WeatherInfo> = ArrayList()
 
 
