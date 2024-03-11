@@ -16,7 +16,12 @@ import com.kartiksetia.weather.db.GetWeatherFromDbUseCase
 import com.kartiksetia.weather.db.UpdateWeatherDbUseCase
 import com.kartiksetia.weather.db.AddWeatherToDbUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,7 +47,7 @@ class WeatherViewModel @Inject constructor(
             getCachedWeather()
         }
     }
-     fun loadWeatherInfo() {
+     private fun loadWeatherInfo() {
         val cities = ArrayList<CityInfo>()
         cities.add(CityInfo("New York", "New York",40.730610,-73.935242))
         cities.add(CityInfo("Austin", "Texas",30.266666,-97.733330))
@@ -51,31 +56,39 @@ class WeatherViewModel @Inject constructor(
         cities.add(CityInfo("Columbus", "Ohio",39.983334,-82.983330))
         val weatherInfoList : MutableList<WeatherInfo> = ArrayList()
 
-            viewModelScope.launch {
+            viewModelScope.launch() {
+
                 state = state.copy(
                     weatherInfo = null,
                     isLoading = true,
                     error = null
                 )
-                for ((index, city) in cities.withIndex()) {
-                when(val result = repository.getWeatherData(city.lat,city.long,index)) {
-                    is Resource.Success -> {
-                        val weatherInfo = result.data
-                        if (weatherInfo != null) {
-                            weatherInfo.city = city
-                            weatherInfoList.add(weatherInfo)
+                val usersFromApiDeferred = async {
+                    cities.forEach { city ->
+                        launch { // this will allow us to run multiple tasks in parallel
+                            when(val result = repository.getWeatherData(city.lat,city.long,cities.indexOf(city))) {
+                                is Resource.Success -> {
+                                    val weatherInfo = result.data
+                                    if (weatherInfo != null) {
+                                        weatherInfo.city = city
+                                        weatherInfo.id = cities.indexOf(city)
+                                        weatherInfoList.add(weatherInfo)
+                                    }
+                                }
+                                is Resource.Error -> {
+                                    state = state.copy(
+                                        weatherInfo = null,
+                                        isLoading = false,
+                                        error = result.message
+                                    )
+                                }
+
+                            }
+
                         }
                     }
-                    is Resource.Error -> {
-                        state = state.copy(
-                            weatherInfo = null,
-                            isLoading = false,
-                            error = result.message
-                        )
-                    }
                 }
-
-            }
+                usersFromApiDeferred.await()
                 if(state.error == null){
                     state = state.copy(
                         weatherInfo = weatherInfoList,

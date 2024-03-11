@@ -4,11 +4,11 @@ import com.kartiksetia.weather.network.WeatherRepositoryImpl
 import javax.inject.Inject
 
 class AddWeatherToDbUseCase @Inject constructor(private val weatherRepositoryImpl: WeatherRepositoryImpl) {
-    suspend fun addForecastToDbUseCase(weatherInfo: List<WeatherInfo>) {
-        for ((i, value) in weatherInfo.withIndex()) {
+     suspend fun addForecastToDbUseCase(weatherInfo: List<WeatherInfo>) {
+        for (value : WeatherInfo in weatherInfo) {
             weatherRepositoryImpl.addWeather(
                 WeatherInfo(
-                    i,
+                    value.id,
                     value.weatherDataPerDay,
                     value.currentWeatherData,
                     value.currentTemp,
