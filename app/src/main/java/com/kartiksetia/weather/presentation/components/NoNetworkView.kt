@@ -25,7 +25,7 @@ import com.kartiksetia.weather.R
 import com.kartiksetia.weather.core.system.theme.Purple40
 
 @Composable
-fun NoNetworkView() {
+fun NoNetworkView(error: String) {
 
     Surface(modifier = Modifier.fillMaxSize()) {
 
@@ -49,7 +49,7 @@ fun NoNetworkView() {
             Spacer(modifier = Modifier.height(20.dp))
             //.........................Text: title
             Text(
-                text = "No network",
+                text = error,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(top = 20.dp)
@@ -60,20 +60,6 @@ fun NoNetworkView() {
                 color = Purple40,
             )
             Spacer(modifier = Modifier.height(8.dp))
-
-            //.........................Text : description
-            Text(
-                text = "No network",
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(top = 10.dp, start = 25.dp, end = 25.dp)
-                    .fillMaxWidth(),
-                letterSpacing = 1.sp,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Black,
-            )
-            //.........................Spacer
-            Spacer(modifier = Modifier.height(24.dp))
 
 
         }

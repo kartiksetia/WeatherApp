@@ -58,7 +58,7 @@ fun HomeScreen(viewModel: WeatherViewModel, navController: NavHostController){
             LoadingView()
         }
         if(viewModel.state.error != null){
-            NoNetworkView()
+            NoNetworkView(viewModel.state.error!!)
         }
     }
 }

@@ -35,9 +35,7 @@ class WeatherRepositoryImpl @Inject constructor(
     }
 
     override fun getWeather(): List<WeatherInfo>{
-        return if (forecastLocalDataSource.getWeather().isNullOrEmpty()) {
-            ArrayList()
-        } else {
+        return if (forecastLocalDataSource.getWeather().isEmpty()) emptyList() else {
             EntitytoWeatherInfo(forecastLocalDataSource.getWeather())
         }
     }
