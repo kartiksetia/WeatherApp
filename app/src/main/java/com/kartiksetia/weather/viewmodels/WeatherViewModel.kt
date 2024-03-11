@@ -29,9 +29,14 @@ class WeatherViewModel @Inject constructor(
         private set
 
     fun loadData(context: Context){
+        state = state.copy(
+            weatherInfo = null,
+            isLoading = true,
+            error = null
+        )
         if(isNetworkAvailable(context)){
             loadWeatherInfo()
-        } else if(isForecastCached()){
+        } else {
             getCachedForecast()
         }
     }
@@ -44,7 +49,6 @@ class WeatherViewModel @Inject constructor(
         cities.add(CityInfo("Columbus", "Ohio",39.983334,-82.983330))
         val weatherInfoList : MutableList<WeatherInfo> = ArrayList()
 
-
             viewModelScope.launch {
                 state = state.copy(
                     weatherInfo = null,
@@ -54,7 +58,7 @@ class WeatherViewModel @Inject constructor(
                 for (city in cities) {
                 when(val result = repository.getWeatherData(city.lat,city.long)) {
                     is Resource.Success -> {
-                        var weatherInfo = result.data
+                        val weatherInfo = result.data
                         if (weatherInfo != null) {
                             weatherInfo.city = city
                             weatherInfoList.add(weatherInfo)
