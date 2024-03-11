@@ -39,7 +39,7 @@ fun DailyWeatherDataDto.toWeatherDataMap(): Map<Int, List<WeatherData>> {
     }
 }
 
-fun WeatherDto.toWeatherInfo(): WeatherInfo {
+fun WeatherDto.toWeatherInfo(id : Int): WeatherInfo {
     val dailyWeatherDataMap = dailyWeatherData.toWeatherDataMap()
     val currentTemp = currentWeatherData.temperature
     val currentPrecipitation = currentWeatherData.precipitation
@@ -50,7 +50,7 @@ fun WeatherDto.toWeatherInfo(): WeatherInfo {
     val currentWeatherData = dailyWeatherDataMap[0]?.get(0)
 
     return WeatherInfo(
-        5,
+        id,
         weatherDataPerDay = dailyWeatherDataMap,
         currentWeatherData = currentWeatherData,
         currentTemp = currentTemp,
@@ -65,10 +65,10 @@ fun WeatherDto.toWeatherInfo(): WeatherInfo {
 
 fun EntitytoWeatherInfo(forecastEntity: List<ForecastEntity>): List<WeatherInfo> {
     val weatherInfos : MutableList<WeatherInfo> = ArrayList()
-    for (forecastEntityNew : ForecastEntity in forecastEntity){
+    for ((i, forecastEntityNew) in forecastEntity.withIndex()) {
         val city = forecastEntityNew.city
         val weatherInfo  : WeatherInfo = WeatherInfo(
-            5,
+            i,
             weatherDataPerDay = mutableMapOf<Int, List<WeatherData>>(),
             currentWeatherData = null,
             currentTemp = forecastEntityNew.temp,
@@ -86,7 +86,7 @@ fun EntitytoWeatherInfo(forecastEntity: List<ForecastEntity>): List<WeatherInfo>
 
 fun entityFromModel(model: WeatherInfo): ForecastEntity {
     return ForecastEntity(
-        id = 5,
+        id = model.id,
         temp = model.currentTemp,
         high = model.todayHighTemp,
         low = model.todayLowTemp,

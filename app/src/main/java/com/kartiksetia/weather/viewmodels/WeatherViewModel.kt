@@ -57,8 +57,8 @@ class WeatherViewModel @Inject constructor(
                     isLoading = true,
                     error = null
                 )
-                for (city in cities) {
-                when(val result = repository.getWeatherData(city.lat,city.long)) {
+                for ((index, city) in cities.withIndex()) {
+                when(val result = repository.getWeatherData(city.lat,city.long,index)) {
                     is Resource.Success -> {
                         val weatherInfo = result.data
                         if (weatherInfo != null) {
@@ -94,15 +94,15 @@ class WeatherViewModel @Inject constructor(
     }
 
     private fun getCachedForecast() {
-        if(getForecastDb.getWeatherFromDbUseCase().isEmpty()){
+        state = if(getForecastDb.getWeatherFromDbUseCase().isEmpty()){
             // can make this in function to avoid code duplication - kartik setia
-            state = state.copy(
+            state.copy(
                 weatherInfo = getForecastDb.getWeatherFromDbUseCase(),
                 isLoading = false,
                 error = "No Data Available"
             )
         }else{
-            state = state.copy(
+            state.copy(
                 weatherInfo = getForecastDb.getWeatherFromDbUseCase(),
                 isLoading = false,
                 error = null

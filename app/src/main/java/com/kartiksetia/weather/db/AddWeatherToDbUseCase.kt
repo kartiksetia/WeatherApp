@@ -9,14 +9,14 @@ class AddWeatherToDbUseCase @Inject constructor(private val weatherRepositoryImp
             weatherRepositoryImpl.addWeather(
                 WeatherInfo(
                     i,
-                    weatherInfo[i].weatherDataPerDay,
-                    weatherInfo[i].currentWeatherData,
-                    weatherInfo[i].currentTemp,
-                    weatherInfo[i].currentPrecipitation,
-                    weatherInfo[i].currentWeatherType,
-                    weatherInfo[i].todayHighTemp,
-                    weatherInfo[i].todayLowTemp,
-                    weatherInfo[i].city
+                    value.weatherDataPerDay,
+                    value.currentWeatherData,
+                    value.currentTemp,
+                    value.currentPrecipitation,
+                    value.currentWeatherType,
+                    value.todayHighTemp,
+                    value.todayLowTemp,
+                    value.city
                 )
             )
         }
