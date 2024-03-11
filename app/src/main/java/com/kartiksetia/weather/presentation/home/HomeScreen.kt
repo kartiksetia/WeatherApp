@@ -44,6 +44,7 @@ fun HomeScreen(viewModel: WeatherViewModel, navController: NavHostController){
                 viewModel.state.weatherInfo?.let {
                     items(it.size) { item ->
                         MainWeatherCard(
+                            viewModel = viewModel,
                             weatherInfo = viewModel.state.weatherInfo!![item],
                             backgroundColor = BackgroundColorCard1,
                             navController = navController

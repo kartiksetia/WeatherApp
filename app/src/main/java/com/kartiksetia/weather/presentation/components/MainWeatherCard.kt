@@ -18,15 +18,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.kartiksetia.weather.R
 import com.kartiksetia.weather.domains.model.WeatherInfo
 import com.kartiksetia.weather.presentation.navigation.Screens
+import com.kartiksetia.weather.viewmodels.WeatherViewModel
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainWeatherCard(
+    viewModel : WeatherViewModel,
     weatherInfo: WeatherInfo,
     backgroundColor: Color,
     navController : NavHostController,
@@ -36,8 +40,10 @@ fun MainWeatherCard(
         Spacer(modifier = Modifier.height(5.dp))
         Card(
             onClick = {
-                navController.navigate(Screens.DetailScreen.route)
-            },
+                val gson = GsonBuilder().create()
+                navController.navigate(Screens.DetailScreen.withArgs(gson.toJson(weatherInfo).toString())
+                )
+                           },
             colors = CardDefaults.cardColors(
                 containerColor = backgroundColor,
             ),
@@ -71,13 +77,13 @@ fun MainWeatherCard(
                         color = Color.White
                     )
                 }
-                data.currentWeatherData?.weatherType?.let { painterResource(id = it.iconRes) }?.let {
-                    Image(
-                        painter = it,
-                        contentDescription = null,
-                        modifier = Modifier.width(40.dp).height(40.dp)
-                    )
-                }
+                Image(
+                    painter = painterResource(id = data.currentWeatherType.iconRes),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(40.dp)
+                        .height(40.dp)
+                )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = "${data.currentTemp}°C",

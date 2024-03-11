@@ -17,13 +17,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.kartiksetia.weather.R
 import com.kartiksetia.weather.core.system.theme.BackgroundColorCard1
+import com.kartiksetia.weather.domains.mapper.WeatherDeserializer
 import com.kartiksetia.weather.domains.model.WeatherInfo
 import com.kartiksetia.weather.presentation.components.DetailWeatherCard
 
 @Composable
-fun DetailScreen(weatherInfo: WeatherInfo, navHostController: NavHostController){
+fun DetailScreen(weatherString: String){
+
+    val gson = GsonBuilder().registerTypeAdapter(WeatherInfo::class.java, WeatherDeserializer()).create()
+
+    val weatherInfo = gson.fromJson(weatherString, WeatherInfo::class.java)
 
     Box(
         modifier = Modifier.fillMaxWidth()
@@ -32,7 +39,7 @@ fun DetailScreen(weatherInfo: WeatherInfo, navHostController: NavHostController)
             modifier = Modifier
                 .fillMaxSize()
                 .paint(
-                    painterResource(id = R.drawable.ic_back),
+                    painterResource(id = R.drawable.ic_back2),
                     contentScale = ContentScale.FillBounds
                 )
         ) {
@@ -42,11 +49,10 @@ fun DetailScreen(weatherInfo: WeatherInfo, navHostController: NavHostController)
                 contentPadding = PaddingValues(1.dp)
             ) {
                 weatherInfo.weatherDataPerDay[0].let {
-                    items(it!!.size) { item ->
+                    items(it!!.take(5).size ) { item ->
                         DetailWeatherCard(
-                            weatherInfo =  weatherInfo.weatherDataPerDay[0]!!.get(item),
-                            backgroundColor = BackgroundColorCard1,
-                            navController = navHostController
+                            weatherInfo = weatherInfo.weatherDataPerDay[0]!![item],
+                            backgroundColor = BackgroundColorCard1
                         )
                     }
                 }

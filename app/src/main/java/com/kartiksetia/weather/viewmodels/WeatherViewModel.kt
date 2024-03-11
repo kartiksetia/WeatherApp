@@ -1,27 +1,40 @@
 package com.kartiksetia.weather.viewmodels
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kartiksetia.weather.core.utils.Database.isNetworkAvailable
 import com.kartiksetia.weather.domains.model.CityInfo
 import com.kartiksetia.weather.domains.model.WeatherInfo
 import com.kartiksetia.weather.domains.model.WeatherState
 import com.kartiksetia.weather.network.WeatherRepository
 import com.kartiksetia.weather.core.utils.Resource
+import com.kartiksetia.weather.db.GetWeatherFromDbUseCase
+import com.kartiksetia.weather.db.UpdateWeatherDbUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
-    private val repository: WeatherRepository
+    private val repository: WeatherRepository,
+    private val getForecastDb: GetWeatherFromDbUseCase,
+    private val updateForecastDb: UpdateWeatherDbUseCase,
 ): ViewModel() {
 
     var state by mutableStateOf(WeatherState())
         private set
 
+    fun loadData(context: Context){
+        if(isNetworkAvailable(context)){
+            loadWeatherInfo()
+        } else if(isForecastCached()){
+            getCachedForecast()
+        }
+    }
      fun loadWeatherInfo() {
         val cities = ArrayList<CityInfo>()
         cities.add(CityInfo("New York", "New York",40.730610,-73.935242))
@@ -46,7 +59,6 @@ class WeatherViewModel @Inject constructor(
                             weatherInfo.city = city
                             weatherInfoList.add(weatherInfo)
                         }
-
                     }
                     is Resource.Error -> {
                         state = state.copy(
@@ -64,9 +76,29 @@ class WeatherViewModel @Inject constructor(
                         isLoading = false,
                         error = null
                     )
+                    updateForecastDb.updateForecastDbUseCase(weatherInfoList)
                 }
 
         }
 
+    }
+
+    private fun isForecastCached(): Boolean {
+        return getForecastDb.getForecastFromDbUseCase() != null
+    }
+
+    private fun getCachedForecast() {
+        state = state.copy(
+            weatherInfo = getForecastDb.getForecastFromDbUseCase(),
+            isLoading = false,
+            error = null
+        )
+
+    }
+
+    private suspend fun updateCachedWeather(forecast: List<WeatherInfo>) {
+        updateForecastDb.updateForecastDbUseCase(
+            forecast
+        )
     }
 }

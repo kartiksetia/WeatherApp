@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        viewModel.loadWeatherInfo()
+        viewModel.loadData(this)
         setContent {
             MyApplicationTheme {
                 App(viewModel = viewModel)

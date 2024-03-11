@@ -2,9 +2,10 @@ package com.kartiksetia.weather.domains.model
 
 
 data class WeatherInfo(
+    val id : Int,
     val weatherDataPerDay: Map<Int, List<WeatherData>>,
     val currentWeatherData: WeatherData?,
-    val currentTemp : Double,
+    var currentTemp : Double,
     val currentPrecipitation : Double,
     val currentWeatherType : WeatherType,
     val todayHighTemp : Double,

@@ -37,7 +37,6 @@ import kotlin.math.roundToInt
     fun DetailWeatherCard(
         weatherInfo: WeatherData,
         backgroundColor: Color,
-        navController : NavHostController,
         modifier: Modifier = Modifier,
     ) {
         weatherInfo.let { data ->
