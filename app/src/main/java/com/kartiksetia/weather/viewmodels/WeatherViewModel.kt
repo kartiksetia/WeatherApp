@@ -39,7 +39,7 @@ class WeatherViewModel @Inject constructor(
         if(isNetworkAvailable(context)){
             loadWeatherInfo()
         } else {
-            getCachedForecast()
+            getCachedWeather()
         }
     }
      fun loadWeatherInfo() {
@@ -93,7 +93,7 @@ class WeatherViewModel @Inject constructor(
 
     }
 
-    private fun getCachedForecast() {
+    private fun getCachedWeather() {
         state = if(getForecastDb.getWeatherFromDbUseCase().isEmpty()){
             // can make this in function to avoid code duplication - kartik setia
             state.copy(
