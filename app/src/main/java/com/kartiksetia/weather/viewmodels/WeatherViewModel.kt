@@ -49,13 +49,13 @@ class WeatherViewModel @Inject constructor(
     }
      private fun loadWeatherInfo() {
         val cities = ArrayList<CityInfo>()
-        cities.add(CityInfo("New York", "New York",40.730610,-73.935242))
-        cities.add(CityInfo("Austin", "Texas",30.266666,-97.733330))
-        cities.add(CityInfo("Sacramento", "California",38.575764,-121.478851))
-        cities.add(CityInfo("Trenton", "New Jersey",40.217052,-74.742935))
-        cities.add(CityInfo("Columbus", "Ohio",39.983334,-82.983330))
-        var weatherInfoList : MutableList<WeatherInfo> = ArrayList()
+         cities.add(CityInfo("New Delhi", "Delhi", 28.6139, 77.2090))
+         cities.add(CityInfo("Chandigarh", "Punjab", 30.7333, 76.7794))
+         cities.add(CityInfo("Jaipur", "Rajasthan", 26.9124, 75.7873))
+         cities.add(CityInfo("Gandhinagar", "Gujarat", 23.2156, 72.6369))
+         cities.add(CityInfo("Bhopal", "Madhya Pradesh", 23.2599, 77.4126))
 
+        var weatherInfoList : MutableList<WeatherInfo> = ArrayList()
             viewModelScope.launch() {
 
                 state = state.copy(
