@@ -54,7 +54,7 @@ class WeatherViewModel @Inject constructor(
         cities.add(CityInfo("Sacramento", "California",38.575764,-121.478851))
         cities.add(CityInfo("Trenton", "New Jersey",40.217052,-74.742935))
         cities.add(CityInfo("Columbus", "Ohio",39.983334,-82.983330))
-        val weatherInfoList : MutableList<WeatherInfo> = ArrayList()
+        var weatherInfoList : MutableList<WeatherInfo> = ArrayList()
 
             viewModelScope.launch() {
 
